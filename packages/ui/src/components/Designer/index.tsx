@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useContext, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useContext, useCallback, ReactNode } from 'react';
 import { DesignerReactProps, Template, SchemaForUI, SchemaType } from '@pdfme/common';
-import Sidebar from './Sidebar/index';
+import Sidebar, { SidebarProps } from './Sidebar/index';
 import Main from './Main/index';
 import { ZOOM, RULER_HEIGHT } from '../../constants';
 import { I18nContext } from '../../contexts';
@@ -29,7 +29,11 @@ const TemplateEditor = ({
   size,
   onSaveTemplate,
   onChangeTemplate,
-}: DesignerReactProps & { onChangeTemplate: (t: Template) => void }) => {
+  onUpdateSide,
+}: DesignerReactProps & {
+  onChangeTemplate: (t: Template) => void;
+  onUpdateSide?: (props: SidebarProps) => void;
+}) => {
   const copiedSchemas = useRef<SchemaForUI[] | null>(null);
   const past = useRef<SchemaForUI[][]>([]);
   const future = useRef<SchemaForUI[][]>([]);
@@ -90,7 +94,13 @@ const TemplateEditor = ({
   );
 
   const changeSchemas = useCallback(
-    (objs: { key: string; value: undefined | string | number | { min: number, max: number }; schemaId: string }[]) => {
+    (
+      objs: {
+        key: string;
+        value: undefined | string | number | { min: number; max: number };
+        schemaId: string;
+      }[]
+    ) => {
       const newSchemas = objs.reduce((acc, { key, value, schemaId }) => {
         const tgt = acc.find((s) => s.id === schemaId)!;
         // Assign to reference
@@ -194,10 +204,6 @@ const TemplateEditor = ({
   }, []);
 
   useEffect(() => {
-    updateTemplate(template);
-  }, [template, updateTemplate]);
-
-  useEffect(() => {
     initEvents();
 
     return destroyEvents;
@@ -221,6 +227,31 @@ const TemplateEditor = ({
   const onChangeHoveringSchemaId = (id: string | null) => {
     setHoveringSchemaId(id);
   };
+
+  useEffect(() => {
+    updateTemplate(template);
+  }, [template, updateTemplate]);
+
+  useEffect(() => {
+    if (onUpdateSide === undefined) return;
+    onUpdateSide({
+      hoveringSchemaId,
+      onChangeHoveringSchemaId,
+      height: mainRef.current ? mainRef.current.clientHeight : 0,
+      size,
+      pageSize: pageSizes[pageCursor],
+      activeElements,
+      schemas: schemasList[pageCursor],
+      changeSchemas,
+      onSortEnd,
+      onEdit: (id: string) => {
+        const editingElem = document.getElementById(id);
+        editingElem && onEdit([editingElem]);
+      },
+      onEditEnd,
+      addSchema,
+    });
+  }, [onUpdateSide]);
 
   if (error) {
     return <Error size={size} error={error} />;
@@ -246,23 +277,27 @@ const TemplateEditor = ({
           setZoomLevel(zoom);
         }}
       />
-      <Sidebar
-        hoveringSchemaId={hoveringSchemaId}
-        onChangeHoveringSchemaId={onChangeHoveringSchemaId}
-        height={mainRef.current ? mainRef.current.clientHeight : 0}
-        size={size}
-        pageSize={pageSizes[pageCursor]}
-        activeElements={activeElements}
-        schemas={schemasList[pageCursor]}
-        changeSchemas={changeSchemas}
-        onSortEnd={onSortEnd}
-        onEdit={(id: string) => {
-          const editingElem = document.getElementById(id);
-          editingElem && onEdit([editingElem]);
-        }}
-        onEditEnd={onEditEnd}
-        addSchema={addSchema}
-      />
+      {onUpdateSide === undefined ? (
+        <Sidebar
+          hoveringSchemaId={hoveringSchemaId}
+          onChangeHoveringSchemaId={onChangeHoveringSchemaId}
+          height={mainRef.current ? mainRef.current.clientHeight : 0}
+          size={size}
+          pageSize={pageSizes[pageCursor]}
+          activeElements={activeElements}
+          schemas={schemasList[pageCursor]}
+          changeSchemas={changeSchemas}
+          onSortEnd={onSortEnd}
+          onEdit={(id: string) => {
+            const editingElem = document.getElementById(id);
+            editingElem && onEdit([editingElem]);
+          }}
+          onEditEnd={onEditEnd}
+          addSchema={addSchema}
+        />
+      ) : (
+        <></>
+      )}
       <Main
         ref={mainRef}
         paperRefs={paperRefs}

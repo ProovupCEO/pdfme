@@ -20,7 +20,7 @@ const dictEn = {
   type: 'Type',
   errorOccurred: 'An error occurred',
   errorBulkUpdateFieldName:
-    'Cannot commit the change because the number of items has been changed.',
+      'Cannot commit the change because the number of items has been changed.',
   commitBulkUpdateFieldName: 'Commit Changes',
   bulkUpdateFieldName: 'Bulk update field names',
 };
@@ -91,7 +91,7 @@ const dictTh: { [key in keyof DictEn]: string } = {
   bulkUpdateFieldName: 'แก้ไขชื่อฟิลด์เป็นชุด',
 };
 
-const dictPl: {[key in keyof DictEn]: string} = {
+const dictPl: { [key in keyof DictEn]: string } = {
   cancel: 'Anuluj',
   field: 'pole',
   fieldName: 'Klucz pola',
@@ -108,11 +108,33 @@ const dictPl: {[key in keyof DictEn]: string} = {
   editField: 'Edytuj pole',
   type: 'Typ pola',
   errorOccurred: 'Wystąpił błąd',
-  errorBulkUpdateFieldName:
-    'Nie można wprowadzić zmian ponieważ liczba elementów uległa zmianie.',
+  errorBulkUpdateFieldName: 'Nie można wprowadzić zmian ponieważ liczba elementów uległa zmianie.',
   commitBulkUpdateFieldName: 'Zaakceptuj zmiany',
-  bulkUpdateFieldName: 'Masowo aktualizuj klucze pól', 
-}
+  bulkUpdateFieldName: 'Masowo aktualizuj klucze pól',
+};
+
+const dictFr = {
+  cancel: 'Annuler',
+  field: 'Champ',
+  fieldName: 'Nom',
+  require: 'Requis',
+  uniq: 'Unique',
+  inputExample: 'Exemple de saisie',
+  edit: 'Éditer',
+  plsInputName: 'Veuillez saisir un nom',
+  fieldMustUniq: "Le nom du champ n'est pas unique",
+  notUniq: '(Nom non unique)',
+  noKeyName: 'Pas de nom',
+  fieldsList: 'Liste des champs',
+  addNewField: 'Ajouter un nouveau champ',
+  editField: 'Éditer le champ',
+  type: 'Type',
+  errorOccurred: 'Une erreur est survenue',
+  errorBulkUpdateFieldName:
+      "Impossible de valider les modifications car le nombre d'éléments a changé.",
+  commitBulkUpdateFieldName: 'Valider les modifications',
+  bulkUpdateFieldName: 'Mise à jour en masse des noms de champs',
+};
 
 const i18n = (lang: Lang, key: keyof DictEn) => {
   switch (lang) {
@@ -126,9 +148,11 @@ const i18n = (lang: Lang, key: keyof DictEn) => {
 
     case 'ja':
       return dictJa[key];
+    case 'fr':
+      return dictFr[key];
 
     default:
-      return dictEn[key];
+      return dictFr[key];
   }
 };
 

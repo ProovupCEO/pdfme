@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, ChangeEvent, Ref } from 'react';
+import React, { useState, forwardRef, ChangeEvent, Ref, useEffect } from 'react';
 import { ImageSchema } from '@pdfme/common';
 import { SchemaUIProps } from './SchemaUI';
 import { readFiles } from '../../helper';
@@ -25,6 +25,9 @@ const ImageSchemaUI = (props: Props, ref: Ref<HTMLInputElement>) => {
         }}
         onClick={(e) => {
           if (editable) {
+            if (schema.customId || schema.signatoryType) {
+              onChange(hasData ? schema.data : '');
+            }
             e.stopPropagation();
           }
         }}
@@ -61,7 +64,7 @@ const ImageSchemaUI = (props: Props, ref: Ref<HTMLInputElement>) => {
       </div>
       <label
         style={{
-          display: editable ? 'flex' : 'none',
+          display: editable && !schema.customId && !schema.signatoryType ? 'flex' : 'none',
           position: 'absolute',
           top: '50%',
           width: '100%',

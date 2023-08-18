@@ -6,10 +6,12 @@ import { DESTROYED_ERR_MSG } from './constants';
 import { I18nContext, FontContext } from './contexts';
 import DesignerComponent from './components/Designer/index';
 import { cloneDeep } from './helper';
+import { SidebarProps } from './components/Designer/Sidebar';
 
 class Designer extends BaseUIClass {
   private onSaveTemplateCallback?: (template: Template) => void;
   private onChangeTemplateCallback?: (template: Template) => void;
+  private onUpdateSideCallback?: (props: SidebarProps) => void;
 
   constructor(props: DesignerProps) {
     super(props);
@@ -39,6 +41,10 @@ class Designer extends BaseUIClass {
     this.onSaveTemplateCallback = cb;
   }
 
+  public onUpdateSide(cb: (props: SidebarProps) => void) {
+    this.onUpdateSideCallback = cb;
+  }
+
   public onChangeTemplate(cb: (template: Template) => void) {
     this.onChangeTemplateCallback = cb;
   }
@@ -56,6 +62,7 @@ class Designer extends BaseUIClass {
                 this.onSaveTemplateCallback(template);
               }
             }}
+            onUpdateSide={this.onUpdateSideCallback}
             onChangeTemplate={(template) => {
               this.template = template;
               if (this.onChangeTemplateCallback) {
