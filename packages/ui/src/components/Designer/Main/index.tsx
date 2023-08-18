@@ -13,7 +13,7 @@ import { SchemaForUI, Size } from '@pdfme/common';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ZOOM, RULER_HEIGHT } from '../../../constants';
 import { usePrevious } from '../../../hooks';
-import { uuid, round, flatten } from '../../../helper';
+import { uuid, round, flatten, stringToColor } from '../../../helper';
 import Paper from '../../Paper';
 import SchemaUI from '../../Schemas/SchemaUI';
 import Selecto from './Selecto';
@@ -327,7 +327,11 @@ const Main = (props: Props, ref: Ref<HTMLDivElement>) => {
             onChange={(value) => {
               changeSchemas([{ key: 'data', value, schemaId: schema.id }]);
             }}
-            outline={hoveringSchemaId === schema.id ? '1px solid #18a0fb' : '1px dashed #4af'}
+            outline={
+              hoveringSchemaId === schema.id
+                ? `1px solid ${stringToColor(schema.roleId ?? '')}`
+                : `1px dashed ${stringToColor(schema.roleId ?? '')}`
+            }
             ref={inputRef}
           />
         )}

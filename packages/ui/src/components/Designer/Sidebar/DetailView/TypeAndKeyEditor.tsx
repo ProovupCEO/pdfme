@@ -2,6 +2,7 @@ import React, { useContext, useRef, useCallback } from 'react';
 import { schemaTypes, SchemaForUI } from '@pdfme/common';
 import { SidebarProps } from '../index';
 import { I18nContext } from '../../../../contexts';
+import AutoCompleteInput from './AutoCompleteInput';
 
 const ErrorLabel = ({ isError, msg }: { isError: boolean; msg: string }) => (
   <span
@@ -12,7 +13,10 @@ const ErrorLabel = ({ isError, msg }: { isError: boolean; msg: string }) => (
 );
 
 const TypeAndKeyEditor = (
-  props: Pick<SidebarProps, 'schemas' | 'changeSchemas'> & { activeSchema: SchemaForUI }
+  props: Pick<SidebarProps, 'schemas' | 'changeSchemas'> & {
+    activeSchema: SchemaForUI;
+    optionsInput?: any;
+  }
 ) => {
   const { changeSchemas, activeSchema, schemas } = props;
   const i18n = useContext(I18nContext);
@@ -33,54 +37,68 @@ const TypeAndKeyEditor = (
   const hasSameKey = getHasSameKey();
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div>
-        <label style={{ marginBottom: 0 }}>{i18n('type')}</label>
-        <select
-          style={{
-            width: '100%',
-            border: '1px solid #767676',
-            borderRadius: 2,
-            color: '#333',
-            background: 'none',
-          }}
-          onChange={(e) =>
-            changeSchemas([{ key: 'type', value: e.target.value, schemaId: activeSchema.id }])
-          }
-          value={activeSchema.type}
-        >
-          {schemaTypes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label style={{ marginBottom: 0 }}>
-          {i18n('fieldName')}
-          <u style={{ fontSize: '0.7rem' }}>
-            (<ErrorLabel msg={i18n('require')} isError={blankKey} />+
-            <ErrorLabel msg={i18n('uniq')} isError={hasSameKey} />)
-          </u>
-        </label>
-
-        <input
-          ref={inputRef}
-          onChange={(e) =>
-            changeSchemas([{ key: 'key', value: e.target.value, schemaId: activeSchema.id }])
-          }
-          style={{
-            width: '100%',
-            border: '1px solid #767676',
-            borderRadius: 2,
-            color: '#333',
-            background: hasSameKey || blankKey ? '#ffa19b' : 'none',
-          }}
-          value={activeSchema.key}
+    <>
+      {props.optionsInput !== undefined ? (
+        <AutoCompleteInput
+          optionsInput={props.optionsInput}
+          activeSchema={activeSchema}
+          value={activeSchema.roleId ?? ''}
+          changeSchemas={changeSchemas}
         />
+      ) : (
+        <></>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div>
+          <label style={{ marginBottom: 0 }}>{i18n('type')}</label>
+          <select
+            style={{
+              width: '100%',
+              border: '1px solid #767676',
+              borderRadius: 2,
+              color: '#333',
+              background: 'none',
+            }}
+            onChange={(e) =>
+              changeSchemas([{ key: 'type', value: e.target.value, schemaId: activeSchema.id }])
+            }
+            value={activeSchema.type}
+          >
+            {schemaTypes
+              .filter((t) => ['image', 'text'].includes(t))
+              .map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div>
+          <label style={{ marginBottom: 0 }}>
+            {i18n('fieldName')}
+            <u style={{ fontSize: '0.7rem' }}>
+              (<ErrorLabel msg={i18n('require')} isError={blankKey} />+
+              <ErrorLabel msg={i18n('uniq')} isError={hasSameKey} />)
+            </u>
+          </label>
+
+          <input
+            ref={inputRef}
+            onChange={(e) =>
+              changeSchemas([{ key: 'key', value: e.target.value, schemaId: activeSchema.id }])
+            }
+            style={{
+              width: '100%',
+              border: '1px solid #767676',
+              borderRadius: 2,
+              color: '#333',
+              background: hasSameKey || blankKey ? '#ffa19b' : 'none',
+            }}
+            value={activeSchema.key}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

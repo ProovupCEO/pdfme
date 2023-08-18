@@ -13,6 +13,7 @@ import {
 import { SchemaUIProps } from './SchemaUI';
 import { ZOOM } from '../../constants';
 import { FontContext } from '../../contexts';
+import { stringToColor } from '../../helper';
 
 type Props = SchemaUIProps & { schema: TextSchema };
 
@@ -23,7 +24,6 @@ const TextSchemaUI = (
   const font = useContext(FontContext);
   const [dynamicFontSize, setDynamicFontSize] = useState<number | undefined>(undefined);
   const [fontAlignmentValue, setFontAlignmentValue] = useState<number>(0);
-
 
   useEffect(() => {
     if (schema.dynamicFontSize && schema.data) {
@@ -45,12 +45,15 @@ const TextSchemaUI = (
     schema.dynamicFontSize?.fit,
     schema.characterSpacing,
     schema.lineHeight,
-    font
+    font,
   ]);
 
   useEffect(() => {
-    getFontKitFont(schema, font).then(fontKitFont => {
-      const fav = getFontAlignmentValue(fontKitFont, dynamicFontSize ?? schema.fontSize ?? DEFAULT_FONT_SIZE);
+    getFontKitFont(schema, font).then((fontKitFont) => {
+      const fav = getFontAlignmentValue(
+        fontKitFont,
+        dynamicFontSize ?? schema.fontSize ?? DEFAULT_FONT_SIZE
+      );
       setFontAlignmentValue(fav);
     });
   }, [
@@ -64,15 +67,17 @@ const TextSchemaUI = (
     schema.characterSpacing,
     schema.lineHeight,
     font,
-    dynamicFontSize
+    dynamicFontSize,
   ]);
-
 
   const style: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     padding: 0,
-    height: fontAlignmentValue < 0 ? schema.height * ZOOM + Math.abs(fontAlignmentValue) : schema.height * ZOOM,
+    height:
+      fontAlignmentValue < 0
+        ? schema.height * ZOOM + Math.abs(fontAlignmentValue)
+        : schema.height * ZOOM,
     width: schema.width * ZOOM,
     resize: 'none',
     marginTop: fontAlignmentValue < 0 ? fontAlignmentValue : 0,
@@ -86,7 +91,9 @@ const TextSchemaUI = (
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-word',
     backgroundColor:
-      schema.data && schema.backgroundColor ? schema.backgroundColor : 'rgb(242 244 255 / 75%)',
+      schema.data && schema.backgroundColor
+        ? schema.backgroundColor
+        : stringToColor(schema.roleId ?? ''),
     border: 'none',
   };
 
@@ -104,7 +111,10 @@ const TextSchemaUI = (
       <div style={{ marginTop: style.marginTop, paddingTop: style.paddingTop }}>
         {/*  Set the letterSpacing of the last character to 0. */}
         {schema.data.split('').map((l, i) => (
-          <span key={i} style={{ letterSpacing: String(schema.data).length === i + 1 ? 0 : 'inherit', }} >
+          <span
+            key={i}
+            style={{ letterSpacing: String(schema.data).length === i + 1 ? 0 : 'inherit' }}
+          >
             {l}
           </span>
         ))}

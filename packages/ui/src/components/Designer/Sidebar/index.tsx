@@ -20,13 +20,20 @@ export type SidebarProps = {
   onEditEnd: () => void;
   changeSchemas: (
     objs: {
-      key: string; value: undefined | string | number | {
-        min: number;
-        max: number;
-      }; schemaId: string
+      key: string;
+      value:
+        | undefined
+        | string
+        | number
+        | {
+            min: number;
+            max: number;
+          };
+      schemaId: string;
     }[]
   ) => void;
   addSchema: () => void;
+  optionsInput?: any;
 };
 
 const Sidebar = (props: SidebarProps) => {

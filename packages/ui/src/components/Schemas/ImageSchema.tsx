@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, ChangeEvent, Ref, useEffect } from 'react';
 import { ImageSchema } from '@pdfme/common';
 import { SchemaUIProps } from './SchemaUI';
-import { readFiles } from '../../helper';
+import { readFiles, stringToColor } from '../../helper';
 import { ZOOM } from '../../constants';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -19,13 +19,13 @@ const ImageSchemaUI = (props: Props, ref: Ref<HTMLInputElement>) => {
       <div
         style={{
           ...size,
-          opacity: hasData ? 1 : 0.5,
-          backgroundImage: hasData || !editable ? 'none' : `url(${placeholder})`,
+          backgroundColor: hasData ? undefined : stringToColor(schema.roleId ?? ''),
+          backgroundImage: undefined,
           backgroundSize: `${size.width}px ${size.height}px`,
         }}
         onClick={(e) => {
           if (editable) {
-            if (schema.customId || schema.signatoryType) {
+            if (schema.roleId) {
               onChange(hasData ? schema.data : '');
             }
             e.stopPropagation();
@@ -64,7 +64,7 @@ const ImageSchemaUI = (props: Props, ref: Ref<HTMLInputElement>) => {
       </div>
       <label
         style={{
-          display: editable && !schema.customId && !schema.signatoryType ? 'flex' : 'none',
+          display: editable && !schema.roleId ? 'flex' : 'none',
           position: 'absolute',
           top: '50%',
           width: '100%',

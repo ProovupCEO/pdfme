@@ -11,7 +11,7 @@ import { SidebarProps } from './components/Designer/Sidebar';
 class Designer extends BaseUIClass {
   private onSaveTemplateCallback?: (template: Template) => void;
   private onChangeTemplateCallback?: (template: Template) => void;
-  private onUpdateSideCallback?: (props: SidebarProps) => void;
+  private options?: any;
 
   constructor(props: DesignerProps) {
     super(props);
@@ -37,12 +37,17 @@ class Designer extends BaseUIClass {
     this.render();
   }
 
-  public onSaveTemplate(cb: (template: Template) => void) {
-    this.onSaveTemplateCallback = cb;
+  public setOptions(options: any) {
+    console.log('In new options', options);
+    if (!this.options) {
+      this.options = options;
+    } else {
+      this.options.contractRoles = options.contractRoles;
+    }
   }
 
-  public onUpdateSide(cb: (props: SidebarProps) => void) {
-    this.onUpdateSideCallback = cb;
+  public onSaveTemplate(cb: (template: Template) => void) {
+    this.onSaveTemplateCallback = cb;
   }
 
   public onChangeTemplate(cb: (template: Template) => void) {
@@ -62,13 +67,13 @@ class Designer extends BaseUIClass {
                 this.onSaveTemplateCallback(template);
               }
             }}
-            onUpdateSide={this.onUpdateSideCallback}
             onChangeTemplate={(template) => {
               this.template = template;
               if (this.onChangeTemplateCallback) {
                 this.onChangeTemplateCallback(template);
               }
             }}
+            options={this.options}
             size={this.size}
           />
         </FontContext.Provider>

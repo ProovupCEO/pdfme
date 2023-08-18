@@ -306,22 +306,22 @@ const sortSchemasList = (template: Template, pageNum: number): SchemaForUI[][] =
     acc.push(
       template.schemas[i]
         ? Object.entries(template.schemas[i])
-          .sort((a, b) => {
-            const aIndex = (template.columns ?? []).findIndex((c) => c === a[0]);
-            const bIndex = (template.columns ?? []).findIndex((c) => c === b[0]);
+            .sort((a, b) => {
+              const aIndex = (template.columns ?? []).findIndex((c) => c === a[0]);
+              const bIndex = (template.columns ?? []).findIndex((c) => c === b[0]);
 
-            return aIndex > bIndex ? 1 : -1;
-          })
-          .map((e) => {
-            const [key, value] = e;
-            const data = template.sampledata ? template.sampledata[0][key] : '';
+              return aIndex > bIndex ? 1 : -1;
+            })
+            .map((e) => {
+              const [key, value] = e;
+              const data = template.sampledata ? template.sampledata[0][key] : '';
 
-            return Object.assign(value, {
-              key,
-              data,
-              id: uuid(),
-            });
-          })
+              return Object.assign(value, {
+                key,
+                data,
+                id: uuid(),
+              });
+            })
         : []
     );
 
@@ -395,6 +395,20 @@ export const fmtTemplate = (template: Template, schemasList: SchemaForUI[][]): T
   };
 
   return schemaAddedTemplate;
+};
+export const stringToColor = (str: string) => {
+  // Convertit une chaîne en un hachage (un nombre)
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Convertit le hachage en une couleur rgba
+  const r = (hash & 0xff0000) >> 16;
+  const g = (hash & 0x00ff00) >> 8;
+  const b = hash & 0x0000ff;
+
+  return `rgba(${r}, ${g}, ${b}, 0.3)`; // 0.3 pour la transparence
 };
 
 export const getInitialSchema = (): SchemaForUI => ({

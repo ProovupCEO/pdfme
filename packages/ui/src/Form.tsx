@@ -35,6 +35,7 @@ class Form extends PreviewUI {
               this.inputs[index][key] = value;
               this.render();
             }}
+            currentRole={this.currentRole}
           />
         </FontContext.Provider>
       </I18nContext.Provider>,

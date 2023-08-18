@@ -23,6 +23,7 @@ const Wrapper = ({
   outline,
   onChangeHoveringSchemaId,
   schema,
+  editable,
 }: Props & { children: ReactNode }) => (
   <div
     title={schema.key}
@@ -32,7 +33,7 @@ const Wrapper = ({
     id={schema.id}
     style={{
       position: 'absolute',
-      cursor: 'pointer',
+      cursor: editable ? 'pointer' : 'default',
       height: schema.height * ZOOM,
       width: schema.width * ZOOM,
       top: schema.position.y * ZOOM,

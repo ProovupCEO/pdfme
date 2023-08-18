@@ -10,7 +10,15 @@ import SchemaUI from './Schemas/SchemaUI';
 import { useUIPreProcessor, useScrollPageCursor } from '../hooks';
 import { templateSchemas2SchemasList, getPagesScrollTopByIndex } from '../helper';
 
-const Preview = ({ template, inputs, size, onChangeInput }: PreviewReactProps) => {
+const Preview = ({
+  template,
+  inputs,
+  size,
+  onChangeInput,
+  currentRole,
+}: PreviewReactProps & {
+  currentRole?: string;
+}) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const paperRefs = useRef<HTMLDivElement[]>([]);
 
@@ -99,11 +107,15 @@ const Preview = ({ template, inputs, size, onChangeInput }: PreviewReactProps) =
             <SchemaUI
               key={schema.id}
               schema={Object.assign(schema, { data })}
-              editable={editable}
+              editable={editable && (!currentRole || schema.roleId === currentRole)}
               placeholder={template.sampledata ? template.sampledata[0][key] : ''}
               tabIndex={index + 100}
               onChange={(value) => handleChangeInput({ key, value })}
-              outline={editable ? '1px dashed #4af' : 'transparent'}
+              outline={
+                editable && (!currentRole || schema.roleId === currentRole)
+                  ? '1px dashed #4af'
+                  : 'transparent'
+              }
             />
           );
         }}

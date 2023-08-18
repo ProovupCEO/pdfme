@@ -29,10 +29,10 @@ const TemplateEditor = ({
   size,
   onSaveTemplate,
   onChangeTemplate,
-  onUpdateSide,
+  options,
 }: DesignerReactProps & {
   onChangeTemplate: (t: Template) => void;
-  onUpdateSide?: (props: SidebarProps) => void;
+  options?: any;
 }) => {
   const copiedSchemas = useRef<SchemaForUI[] | null>(null);
   const past = useRef<SchemaForUI[][]>([]);
@@ -232,27 +232,6 @@ const TemplateEditor = ({
     updateTemplate(template);
   }, [template, updateTemplate]);
 
-  useEffect(() => {
-    if (onUpdateSide === undefined) return;
-    onUpdateSide({
-      hoveringSchemaId,
-      onChangeHoveringSchemaId,
-      height: mainRef.current ? mainRef.current.clientHeight : 0,
-      size,
-      pageSize: pageSizes[pageCursor],
-      activeElements,
-      schemas: schemasList[pageCursor],
-      changeSchemas,
-      onSortEnd,
-      onEdit: (id: string) => {
-        const editingElem = document.getElementById(id);
-        editingElem && onEdit([editingElem]);
-      },
-      onEditEnd,
-      addSchema,
-    });
-  }, [onUpdateSide]);
-
   if (error) {
     return <Error size={size} error={error} />;
   }
@@ -277,27 +256,24 @@ const TemplateEditor = ({
           setZoomLevel(zoom);
         }}
       />
-      {onUpdateSide === undefined ? (
-        <Sidebar
-          hoveringSchemaId={hoveringSchemaId}
-          onChangeHoveringSchemaId={onChangeHoveringSchemaId}
-          height={mainRef.current ? mainRef.current.clientHeight : 0}
-          size={size}
-          pageSize={pageSizes[pageCursor]}
-          activeElements={activeElements}
-          schemas={schemasList[pageCursor]}
-          changeSchemas={changeSchemas}
-          onSortEnd={onSortEnd}
-          onEdit={(id: string) => {
-            const editingElem = document.getElementById(id);
-            editingElem && onEdit([editingElem]);
-          }}
-          onEditEnd={onEditEnd}
-          addSchema={addSchema}
-        />
-      ) : (
-        <></>
-      )}
+      <Sidebar
+        hoveringSchemaId={hoveringSchemaId}
+        onChangeHoveringSchemaId={onChangeHoveringSchemaId}
+        height={mainRef.current ? mainRef.current.clientHeight : 0}
+        size={size}
+        pageSize={pageSizes[pageCursor]}
+        activeElements={activeElements}
+        schemas={schemasList[pageCursor]}
+        changeSchemas={changeSchemas}
+        onSortEnd={onSortEnd}
+        onEdit={(id: string) => {
+          const editingElem = document.getElementById(id);
+          editingElem && onEdit([editingElem]);
+        }}
+        onEditEnd={onEditEnd}
+        addSchema={addSchema}
+        optionsInput={options}
+      />
       <Main
         ref={mainRef}
         paperRefs={paperRefs}

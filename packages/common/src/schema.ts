@@ -45,8 +45,6 @@ export const TextSchema = CommonSchema.extend({
 
 export const ImageSchema = CommonSchema.extend({
   type: z.literal(SchemaType.Enum.image),
-  customId: z.string().optional(),
-  signatoryType: z.string().optional(),
 });
 
 export const BarcodeSchema = CommonSchema.extend({ type: BarcodeSchemaType });
@@ -56,6 +54,7 @@ export const Schema = z.union([TextSchema, ImageSchema, BarcodeSchema]);
 const SchemaForUIAdditionalInfo = z.object({
   id: z.string(),
   key: z.string(),
+  roleId: z.string().optional(),
   data: z.string(),
 });
 
@@ -118,7 +117,10 @@ export const UIProps = CommonProps.extend({
 
 // -----------------Form, Viewer-----------------
 
-export const PreviewProps = UIProps.extend({ inputs: Inputs }).strict();
+export const PreviewProps = UIProps.extend({
+  inputs: Inputs,
+  currentRole: z.string().optional(),
+}).strict();
 export const PreviewReactProps = PreviewProps.omit({ domContainer: true }).extend({
   onChangeInput: z
     .function()

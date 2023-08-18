@@ -144,12 +144,14 @@ export abstract class BaseUIClass {
 }
 export abstract class PreviewUI extends BaseUIClass {
   protected inputs!: { [key: string]: string }[];
+  protected currentRole?: string;
 
   constructor(props: PreviewProps) {
     super(props);
     checkPreviewProps(props);
 
     this.inputs = cloneDeep(props.inputs);
+    this.currentRole = props.currentRole || undefined;
   }
 
   public getInputs() {
