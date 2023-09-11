@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { SchemaForUI } from '@pdfme/common';
+import { I18nContext } from '../../../../contexts';
+import { ErrorLabel } from './TypeAndKeyEditor';
 
 type AutoCompleteInputProps = {
   activeSchema: SchemaForUI;
+  schemas: SchemaForUI[];
   value: string;
   optionsInput: any;
   changeSchemas: (objs: { key: string; value: string; schemaId: string }[]) => void;
@@ -13,21 +16,23 @@ const AutoCompleteInput = ({
   activeSchema,
   changeSchemas,
   optionsInput,
+  schemas,
 }: AutoCompleteInputProps) => {
   const [inputValue, setInputValue] = useState(value ?? '');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const i18n = useContext(I18nContext);
 
   useEffect(() => {
     const newRoles = optionsInput.contractRoles;
-    console.log('Contract roles', newRoles);
     if (inputValue === '') {
       setSuggestions(newRoles);
       return;
     }
     const filteredSuggestions = newRoles.filter(
       (role: string) =>
-        role.toLowerCase().includes(inputValue.toLowerCase()) && role.toLowerCase() !== value
+        role.toLowerCase().includes(inputValue.toLowerCase()) &&
+        role.toLowerCase() !== value.toLowerCase()
     );
     setSuggestions(filteredSuggestions);
   }, [inputValue, optionsInput.contractRoles?.length]);
@@ -50,16 +55,27 @@ const AutoCompleteInput = ({
     console.log(optionsInput);
     const currentRoles = optionsInput.contractRoles;
     optionsInput.setContractRoles([...currentRoles, inputValue]);
-    changeSchemas([{ key: 'roleId', value: inputValue, schemaId: activeSchema.id }]);
+    changeSchemas([{ key: 'roleId', value: inputValue.toLowerCase(), schemaId: activeSchema.id }]);
     const newRoles = optionsInput.contractRoles;
-    console.log('check update', newRoles);
-    setSuggestions(newRoles);
+    const filteredSuggestions = newRoles.filter(
+      (role: string) =>
+        role.toLowerCase().includes(inputValue.toLowerCase()) &&
+        role.toLowerCase() !== value.toLowerCase()
+    );
+    setSuggestions(filteredSuggestions);
   };
+
+  const blankKey = !activeSchema.roleId;
 
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-        <label style={{ marginBottom: 5 }}>Signataire</label>
+        <label style={{ marginBottom: 5 }}>
+          {i18n('roleLabel')}
+          <u style={{ fontSize: '0.7rem', marginLeft: 2 }}>
+            (<ErrorLabel msg={i18n('require')} isError={blankKey} />)
+          </u>
+        </label>
         <input
           ref={inputRef}
           onChange={handleInputChange}
@@ -77,6 +93,7 @@ const AutoCompleteInput = ({
             style={{
               margin: 0,
               padding: 0,
+              width: '100%',
               listStyle: 'none',
               border: '1px solid #767676',
               borderRadius: 2,
@@ -98,7 +115,7 @@ const AutoCompleteInput = ({
                 {suggestion}
               </li>
             ))}
-            {inputValue && inputValue !== value && (
+            {inputValue && inputValue.toLowerCase() !== value.toLowerCase() && (
               <li
                 onClick={handleAddNewRole}
                 style={{
@@ -108,7 +125,7 @@ const AutoCompleteInput = ({
                   fontWeight: 'bold',
                 }}
               >
-                Ajouter {inputValue} comme nouveau rôle
+                {i18n('rolePlaceholder', { role: inputValue })}
               </li>
             )}
           </ul>

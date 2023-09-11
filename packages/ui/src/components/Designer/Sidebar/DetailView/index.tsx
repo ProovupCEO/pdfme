@@ -7,6 +7,7 @@ import TextPropEditor from './TextPropEditor';
 import ExampleInputEditor from './ExampleInputEditor';
 import PositionAndSizeEditor from './PositionAndSizeEditor';
 import TypeAndKeyEditor from './TypeAndKeyEditor';
+import InputLabelEditor from "./InputLabelEditor";
 
 const DetailView = (
   props: Pick<SidebarProps, 'schemas' | 'pageSize' | 'changeSchemas' | 'activeElements'> & {
@@ -18,17 +19,12 @@ const DetailView = (
 
   return (
     <div>
-      <div style={{ height: 40, display: 'flex', alignItems: 'center' }}>
-        <span style={{ textAlign: 'center', width: '100%', fontWeight: 'bold' }}>
-          {i18n('editField')}
-        </span>
-      </div>
-      <Divider />
       <div style={{ fontSize: '0.9rem' }}>
         <TypeAndKeyEditor {...props} />
+        {/*<Divider />
+        <PositionAndSizeEditor {...props} /> */}
         <Divider />
-        <PositionAndSizeEditor {...props} />
-        <Divider />
+        <InputLabelEditor {...props} />
         {activeSchema.type === 'text' && (
           <>
             <TextPropEditor {...props} />
@@ -36,6 +32,12 @@ const DetailView = (
           </>
         )}
         <ExampleInputEditor {...props} />
+      </div>
+      <Divider />
+      <div style={{ height: 40, display: 'flex', alignItems: 'center' }}>
+        <span style={{ textAlign: 'center', width: '100%', fontWeight: 'bold' }}>
+          {i18n('editField')}
+        </span>
       </div>
     </div>
   );

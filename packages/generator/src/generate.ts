@@ -84,7 +84,7 @@ const generate = async (props: GenerateProps) => {
 
   postProcessing(pdfDoc);
 
-  return pdfDoc.save();
+  return pdfDoc.save({ useObjectStreams: false });
 };
 
 export default generate;

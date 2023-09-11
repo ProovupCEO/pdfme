@@ -4,7 +4,7 @@ import { SidebarProps } from '../index';
 import { I18nContext } from '../../../../contexts';
 import AutoCompleteInput from './AutoCompleteInput';
 
-const ErrorLabel = ({ isError, msg }: { isError: boolean; msg: string }) => (
+export const ErrorLabel = ({ isError, msg }: { isError: boolean; msg: string }) => (
   <span
     style={{ color: isError ? '#ffa19b' : 'inherit', fontWeight: isError ? 'bold' : 'inherit' }}
   >
@@ -41,6 +41,7 @@ const TypeAndKeyEditor = (
       {props.optionsInput !== undefined ? (
         <AutoCompleteInput
           optionsInput={props.optionsInput}
+          schemas={schemas}
           activeSchema={activeSchema}
           value={activeSchema.roleId ?? ''}
           changeSchemas={changeSchemas}
@@ -49,7 +50,7 @@ const TypeAndKeyEditor = (
         <></>
       )}
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div>
+        <div style={{ marginRight: '2px' }}>
           <label style={{ marginBottom: 0 }}>{i18n('type')}</label>
           <select
             style={{
@@ -68,7 +69,7 @@ const TypeAndKeyEditor = (
               .filter((t) => ['image', 'text'].includes(t))
               .map((t) => (
                 <option key={t} value={t}>
-                  {t}
+                  {t === 'image' ? i18n('signature') : t}
                 </option>
               ))}
           </select>
@@ -76,7 +77,7 @@ const TypeAndKeyEditor = (
         <div>
           <label style={{ marginBottom: 0 }}>
             {i18n('fieldName')}
-            <u style={{ fontSize: '0.7rem' }}>
+            <u style={{ fontSize: '0.7rem', marginLeft: 2 }}>
               (<ErrorLabel msg={i18n('require')} isError={blankKey} />+
               <ErrorLabel msg={i18n('uniq')} isError={hasSameKey} />)
             </u>

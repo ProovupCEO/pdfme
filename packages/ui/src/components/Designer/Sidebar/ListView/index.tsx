@@ -27,8 +27,8 @@ const ListView = (
     changeSchemas,
   } = props;
   const i18n = useContext(I18nContext);
-  const [isBulkUpdateFieldNamesMode, setIsBulkUpdateFieldNamesMode] = useState(false);
-  const [fieldNamesValue, setFieldNamesValue] = useState('');
+  // const [isBulkUpdateFieldNamesMode, setIsBulkUpdateFieldNamesMode] = useState(false);
+  // const [fieldNamesValue, setFieldNamesValue] = useState('');
   const height = size.height - RULER_HEIGHT - RULER_HEIGHT / 2 - 145;
   return (
     <div>
@@ -38,8 +38,15 @@ const ListView = (
         </span>
       </div>
       <Divider />
-
-      {isBulkUpdateFieldNamesMode ? (
+      <SelectableSortableContainer
+        height={height}
+        schemas={schemas}
+        hoveringSchemaId={hoveringSchemaId}
+        onChangeHoveringSchemaId={onChangeHoveringSchemaId}
+        onSortEnd={onSortEnd}
+        onEdit={onEdit}
+      />
+      {/*isBulkUpdateFieldNamesMode ? (
         <div>
           <textarea
             wrap="off"
@@ -59,17 +66,11 @@ const ListView = (
           ></textarea>
         </div>
       ) : (
-        <SelectableSortableContainer
-          height={height}
-          schemas={schemas}
-          hoveringSchemaId={hoveringSchemaId}
-          onChangeHoveringSchemaId={onChangeHoveringSchemaId}
-          onSortEnd={onSortEnd}
-          onEdit={onEdit}
-        />
-      )}
 
-      <div
+      )*/}
+
+      {/*
+        <div
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
@@ -113,6 +114,7 @@ const ListView = (
         )}
       </div>
       <Divider />
+      */}
     </div>
   );
 };

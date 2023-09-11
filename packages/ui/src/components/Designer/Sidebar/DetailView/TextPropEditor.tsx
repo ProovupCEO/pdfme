@@ -199,11 +199,13 @@ const TextPropEditor = (
         <NumberInputSet
           width="30%"
           label={'FontSize(pt)'}
-          value={activeSchema.dynamicFontSize ? NaN : (activeSchema.fontSize ?? DEFAULT_FONT_SIZE)}
+          value={activeSchema.dynamicFontSize ? NaN : activeSchema.fontSize ?? DEFAULT_FONT_SIZE}
           style={activeSchema.dynamicFontSize ? { background: '#ccc', cursor: 'not-allowed' } : {}}
           disabled={!!activeSchema.dynamicFontSize}
           onChange={(e) => {
-            changeSchemas([{ key: 'fontSize', value: Number(e.target.value), schemaId: activeSchema.id }])
+            changeSchemas([
+              { key: 'fontSize', value: Number(e.target.value), schemaId: activeSchema.id },
+            ]);
           }}
         />
         <NumberInputSet
@@ -226,7 +228,11 @@ const TextPropEditor = (
           onChange={async (e) => {
             const currentCharacterSpacing = Number(e.target.value);
             changeSchemas([
-              { key: 'characterSpacing', value: currentCharacterSpacing, schemaId: activeSchema.id, },
+              {
+                key: 'characterSpacing',
+                value: currentCharacterSpacing,
+                schemaId: activeSchema.id,
+              },
             ]);
           }}
         />
@@ -247,10 +253,14 @@ const TextPropEditor = (
           onChange={(e) => {
             changeSchemas([
               {
-                key: 'dynamicFontSize', value: e.target.checked ? {
-                  min: activeSchema.fontSize || DEFAULT_FONT_SIZE,
-                  max: activeSchema.fontSize || DEFAULT_FONT_SIZE,
-                } : undefined, schemaId: activeSchema.id,
+                key: 'dynamicFontSize',
+                value: e.target.checked
+                  ? {
+                      min: activeSchema.fontSize || DEFAULT_FONT_SIZE,
+                      max: activeSchema.fontSize || DEFAULT_FONT_SIZE,
+                    }
+                  : undefined,
+                schemaId: activeSchema.id,
               },
             ]);
           }}
@@ -265,12 +275,18 @@ const TextPropEditor = (
               minNumber={0}
               style={
                 activeSchema.dynamicFontSize &&
-                  activeSchema.dynamicFontSize.max < activeSchema.dynamicFontSize.min
+                activeSchema.dynamicFontSize.max < activeSchema.dynamicFontSize.min
                   ? { background: 'rgb(200 0 0 / 30%)' }
                   : {}
               }
               onChange={(e) => {
-                changeSchemas([{ key: 'dynamicFontSize.min', value: Number(e.target.value), schemaId: activeSchema.id }])
+                changeSchemas([
+                  {
+                    key: 'dynamicFontSize.min',
+                    value: Number(e.target.value),
+                    schemaId: activeSchema.id,
+                  },
+                ]);
               }}
             />
 
@@ -281,12 +297,18 @@ const TextPropEditor = (
               minNumber={0}
               style={
                 activeSchema.dynamicFontSize &&
-                  activeSchema.dynamicFontSize.max < activeSchema.dynamicFontSize.min
+                activeSchema.dynamicFontSize.max < activeSchema.dynamicFontSize.min
                   ? { background: 'rgb(200 0 0 / 30%)' }
                   : {}
               }
               onChange={(e) => {
-                changeSchemas([{ key: 'dynamicFontSize.max', value: Number(e.target.value), schemaId: activeSchema.id }])
+                changeSchemas([
+                  {
+                    key: 'dynamicFontSize.max',
+                    value: Number(e.target.value),
+                    schemaId: activeSchema.id,
+                  },
+                ]);
               }}
             />
 
@@ -296,7 +318,9 @@ const TextPropEditor = (
               value={activeSchema.dynamicFontSize.fit ?? DEFAULT_DYNAMIC_FIT}
               options={dynamicFits}
               onChange={(e) => {
-                changeSchemas([{ key: 'dynamicFontSize.fit', value: e.target.value, schemaId: activeSchema.id }])
+                changeSchemas([
+                  { key: 'dynamicFontSize.fit', value: e.target.value, schemaId: activeSchema.id },
+                ]);
               }}
             />
           </>
@@ -320,19 +344,6 @@ const TextPropEditor = (
             changeSchemas([
               { key: 'fontColor', value: DEFAULT_FONT_COLOR, schemaId: activeSchema.id },
             ])
-          }
-        />
-
-        <ColorInputSet
-          label={'Background'}
-          value={activeSchema.backgroundColor ?? '#ffffff'}
-          onChange={(e) =>
-            changeSchemas([
-              { key: 'backgroundColor', value: e.target.value, schemaId: activeSchema.id },
-            ])
-          }
-          onClear={() =>
-            changeSchemas([{ key: 'backgroundColor', value: '', schemaId: activeSchema.id }])
           }
         />
       </div>

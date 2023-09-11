@@ -19,6 +19,8 @@ export const SchemaType = z.enum(schemaTypes);
 
 export const CommonSchema = z.object({
   type: SchemaType,
+  roleId: z.string().optional(),
+  label: z.string().optional(),
   position: z.object({ x: z.number(), y: z.number() }),
   width: z.number(),
   height: z.number(),
@@ -54,7 +56,6 @@ export const Schema = z.union([TextSchema, ImageSchema, BarcodeSchema]);
 const SchemaForUIAdditionalInfo = z.object({
   id: z.string(),
   key: z.string(),
-  roleId: z.string().optional(),
   data: z.string(),
 });
 

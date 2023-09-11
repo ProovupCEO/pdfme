@@ -114,20 +114,14 @@ const Sidebar = (props: SidebarProps) => {
             boxSizing: 'content-box',
           }}
         >
-          {getActiveSchemas().length === 0 ? (
-            <ListView {...props} />
-          ) : (
-            <DetailView {...props} activeSchema={getLastActiveSchema()} />
-          )}
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-around',
-              position: 'absolute',
               width: '100%',
               left: 0,
               bottom: '1rem',
-              paddingTop: '1rem',
+              paddingBottom: '1rem',
             }}
           >
             <button
@@ -143,6 +137,11 @@ const Sidebar = (props: SidebarProps) => {
               <strong style={{ color: '#fff' }}>{i18n('addNewField')}</strong>
             </button>
           </div>
+          {getActiveSchemas().length === 0 ? (
+            <ListView {...props} />
+          ) : (
+            <DetailView {...props} activeSchema={getLastActiveSchema()} />
+          )}
         </div>
       </div>
     </div>
