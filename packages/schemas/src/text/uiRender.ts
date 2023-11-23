@@ -16,6 +16,7 @@ import {
   calculateDynamicFontSize,
   getFontKitFont,
   getBrowserVerticalFontAdjustments,
+  stringToColor,
 } from './helper';
 
 const mapVerticalAlignToFlex = (verticalAlignmentValue: string | undefined) => {
@@ -36,11 +37,11 @@ const getBackgroundColor = (
   schema: Schema
 ) => {
   if ((mode === 'form' || mode === 'designer') && value && schema.backgroundColor) {
-    return schema.backgroundColor as string;
+    return stringToColor(schema.roleId ?? '');
   } else if (mode === 'viewer') {
-    return (schema.backgroundColor as string) ?? 'transparent';
+    return stringToColor(schema.roleId ?? '') ?? 'transparent';
   } else {
-    return 'rgb(242 244 255 / 75%)';
+    return stringToColor(schema.roleId ?? '');
   }
 };
 
@@ -117,7 +118,7 @@ export const uiRender = async (arg: UIRenderProps<TextSchema>) => {
       border: 'none',
       outline: 'none',
       paddingTop: topAdjustment + 'px',
-      backgroundColor: 'transparent',
+      backgroundColor: stringToColor(schema.roleId ?? ''),
       width: '100%',
       height: '100%',
     };

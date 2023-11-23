@@ -2,6 +2,7 @@ import React, { useEffect, useContext, ReactNode, useRef } from 'react';
 import { ZOOM, UIRenderProps, SchemaForUI, Schema } from '@pdfme/common';
 import { SELECTABLE_CLASSNAME } from '../constants';
 import { PluginsRegistry, OptionsContext } from '../contexts';
+import { capitalize } from '../helper';
 
 type RendererProps = Omit<
   UIRenderProps<Schema>,
@@ -21,7 +22,7 @@ const Wrapper = ({
   schema,
 }: RendererProps & { children: ReactNode }) => (
   <div
-    title={schema.key}
+    title={`${schema.key} (📝: ${schema.roleId ?? ''})\n${schema.label ?? ''}`}
     onMouseEnter={() => onChangeHoveringSchemaId && onChangeHoveringSchemaId(schema.id)}
     onMouseLeave={() => onChangeHoveringSchemaId && onChangeHoveringSchemaId(null)}
     className={SELECTABLE_CLASSNAME}
@@ -37,6 +38,24 @@ const Wrapper = ({
       outline,
     }}
   >
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        color: 'black',
+        padding: '2px',
+        fontSize: '10px',
+        maxWidth: '50px', // Largeur maximale
+        overflow: 'hidden', // Masque le texte qui déborde
+        whiteSpace: 'nowrap', // Empêche les retours à la ligne
+        textOverflow: 'ellipsis', // Ajoute des points de suspension à la fin du texte tronqué
+        zIndex: 1,
+      }}
+    >
+      {schema.key ? capitalize(schema.key) : ''}
+    </div>
     {children}
   </div>
 );
@@ -51,10 +70,9 @@ const Renderer = (props: RendererProps) => {
 
   useEffect(() => {
     if (ref.current && schema.type) {
-
       const render = Object.values(pluginsRegistry).find(
         (plugin) => plugin?.propPanel.defaultSchema.type === schema.type
-      )?.ui
+      )?.ui;
 
       if (!render) {
         console.error(`[@pdfme/ui] Renderer for type ${schema.type} not found.

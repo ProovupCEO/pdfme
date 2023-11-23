@@ -8,6 +8,7 @@ import { RULER_HEIGHT } from '../../../../constants';
 import Divider from '../../../Divider';
 import AlignWidget from './AlignWidget';
 import WidgetRenderer from './WidgetRenderer';
+import AutoCompleteInput from './AutoCompleteInput';
 
 const DetailView = (
   props: Pick<
@@ -15,9 +16,10 @@ const DetailView = (
     'size' | 'schemas' | 'pageSize' | 'changeSchemas' | 'activeElements' | 'deselectSchema'
   > & {
     activeSchema: SchemaForUI;
+    optionsInput?: any;
   }
 ) => {
-  const { size, changeSchemas, deselectSchema, activeSchema, activeElements } = props;
+  const { size, changeSchemas, deselectSchema, activeSchema, schemas, activeElements } = props;
   const form = useForm();
 
   const i18n = useContext(I18nContext);
@@ -87,27 +89,6 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
         },
       },
       key: { title: 'Name', type: 'string', widget: 'input' },
-      '-': { type: 'void', widget: 'Divider', cellSpan: 2 },
-      align: { title: 'Align', type: 'void', widget: 'AlignWidget', cellSpan: 2 },
-      position: {
-        type: 'object',
-        widget: 'card',
-        properties: {
-          x: { title: 'X', type: 'number', widget: 'inputNumber' },
-          y: { title: 'Y', type: 'number', widget: 'inputNumber' },
-        },
-      },
-      width: { title: 'Width', type: 'number', widget: 'inputNumber', span: 8 },
-      height: { title: 'Height', type: 'number', widget: 'inputNumber', span: 8 },
-      rotate: {
-        title: 'Rotate',
-        type: 'number',
-        widget: 'inputNumber',
-        span: 8,
-        disabled: activePlugin.propPanel.defaultSchema?.rotate === undefined,
-        max: 360,
-        min: 0,
-      },
     },
   };
 
@@ -166,6 +147,17 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
           overflowX: 'hidden',
         }}
       >
+        {props.optionsInput !== undefined ? (
+          <AutoCompleteInput
+            optionsInput={props.optionsInput}
+            schemas={schemas}
+            activeSchema={activeSchema}
+            value={activeSchema.roleId ?? ''}
+            changeSchemas={changeSchemas}
+          />
+        ) : (
+          <></>
+        )}
         <FormRender
           form={form}
           schema={propPanelSchema}

@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react';
 import type * as CSS from 'csstype';
 import type { ImageSchema } from './types';
 import { UIRenderProps, ZOOM } from '@pdfme/common';
+import { stringToColor } from '../text/helper';
 
 const fullSize = { width: '100%', height: '100%' };
 
@@ -36,18 +37,23 @@ const readFile = (input: File | FileList | null): Promise<string | ArrayBuffer> 
 export const uiRender = async (arg: UIRenderProps<ImageSchema>) => {
   const { value, rootElement, mode, onChange, stopEditing, tabIndex, placeholder, schema } = arg;
   const editable = mode === 'form' || mode === 'designer';
+  const hasData = Boolean(schema.data);
 
   const size = { width: schema.width * ZOOM, height: schema.height * ZOOM };
 
   const container = document.createElement('div');
   const containerStyle: CSS.Properties = {
     ...fullSize,
-    backgroundImage: value ? 'none' : `url(${placeholder})`,
+    backgroundColor: hasData ? undefined : stringToColor(schema.roleId || ''),
+    backgroundImage: undefined,
     backgroundSize: `${size.width}px ${size.height}px`,
   };
   Object.assign(container.style, containerStyle);
   container.addEventListener('click', (e) => {
     if (editable) {
+      if (schema.roleId && onChange) {
+        onChange(hasData ? value : '');
+      }
       e.stopPropagation();
     }
   });
@@ -102,7 +108,7 @@ export const uiRender = async (arg: UIRenderProps<ImageSchema>) => {
     };
     Object.assign(label.style, labelStyle);
     container.appendChild(label);
-    const input = document.createElement('input');
+    /*const input = document.createElement('input');
     const inputStyle: CSS.Properties = { ...fullSize, position: 'absolute', top: '50%' };
     Object.assign(input.style, inputStyle);
     input.tabIndex = tabIndex || 0;
@@ -113,6 +119,6 @@ export const uiRender = async (arg: UIRenderProps<ImageSchema>) => {
       readFile(changeEvent.target.files).then((result) => onChange && onChange(result as string));
     });
     input.addEventListener('blur', () => stopEditing && stopEditing());
-    label.appendChild(input);
+    label.appendChild(input);*/
   }
 };

@@ -14,6 +14,8 @@ const dictEn = {
   notUniq: '(Not unique name)',
   noKeyName: 'No name',
   fieldsList: 'Field List',
+  roleLabel: 'Role',
+  rolePlaceholder: 'Add "{{role}}" as new role',
   addNewField: 'Add new field',
   editField: 'Edit Field',
   type: 'Type',
@@ -41,6 +43,8 @@ const dictJa: { [key in keyof DictEn]: string } = {
   fieldsList: '入力項目一覧',
   addNewField: '入力項目を追加',
   editField: '入力項目を編集',
+  roleLabel: 'ロール',
+  rolePlaceholder: '"{{role}}"を新しいロールとして追加',
   type: 'タイプ',
   errorOccurred: 'エラーが発生しました',
   errorBulkUpdateFieldName: '項目数が変更されているため変更をコミットできません。',
@@ -66,6 +70,8 @@ const dictAr: { [key in keyof DictEn]: string } = {
   addNewField: 'إضافة حقل جديد',
   editField: 'تعديل الحقل',
   type: 'النوع',
+  roleLabel: 'الدور',
+  rolePlaceholder: 'إضافة "{{role}}" كدور جديد',
   errorOccurred: 'حدث خطأ',
   errorBulkUpdateFieldName: 'لا يمكن تنفيذ التغيير لأنه تم تغيير عدد العناصر.',
   commitBulkUpdateFieldName: 'تنفيذ التغييرات',
@@ -82,6 +88,8 @@ const dictTh: { [key in keyof DictEn]: string } = {
   require: 'จำเป็น',
   uniq: 'ต้องไม่ซ้ำกัน',
   edit: 'แก้ไข',
+  roleLabel: 'บทบาท',
+  rolePlaceholder: 'เพิ่ม "{{role}}" เป็นบทบาทใหม่',
   plsInputName: 'กรุณาใส่ชื่อ',
   fieldMustUniq: 'ชื่อฟิลด์ต้องไม่ซ้ำกัน',
   notUniq: '(ชื่อฟิลด์ซ้ำกัน)',
@@ -106,6 +114,8 @@ const dictIt: { [key in keyof DictEn]: string } = {
   require: 'Richiesto',
   uniq: 'Univoco',
   edit: 'Modifica',
+  roleLabel: 'Ruolo',
+  rolePlaceholder: 'Aggiungi "{{role}}" come nuovo ruolo',
   plsInputName: 'Inserisci il nome per favore',
   fieldMustUniq: 'Il nome del campo non è univoco',
   notUniq: '(Nome non univoco)',
@@ -131,6 +141,8 @@ const dictPl: { [key in keyof DictEn]: string } = {
   require: 'wymagany',
   uniq: 'unikalny',
   edit: 'Edytuj',
+  roleLabel: 'Rola',
+  rolePlaceholder: 'Dodaj "{{role}}" jako nową rolę',
   plsInputName: 'Wymagane wprowadzenie klucza pola',
   fieldMustUniq: 'Klucz pola nie jest unikalny',
   notUniq: '(Klucz pola nie jest unikalny)',
@@ -148,6 +160,43 @@ const dictPl: { [key in keyof DictEn]: string } = {
   bgColor: 'Kolor tła',
 };
 
+const dictFr = {
+  cancel: 'Annuler',
+  field: 'Champ',
+  label: 'Libellé (description du champ)',
+  fieldName: 'Nom',
+  signature: 'Signature',
+  require: 'Requis',
+  uniq: 'Unique',
+  inputExample: 'Exemple de saisie',
+  edit: 'Éditer',
+  plsInputName: 'Veuillez saisir un nom',
+  fieldMustUniq: "Le nom du champ n'est pas unique",
+  notUniq: '(Nom non unique)',
+  noKeyName: 'Pas de nom',
+  fieldsList: 'Liste des champs',
+  addNewField: 'Ajouter un nouveau champ',
+  editField: 'Éditer le champ',
+  type: 'Type',
+  roleLabel: 'Rôle',
+  rolePlaceholder: 'Ajouter "{{role}}" comme nouveau rôle',
+  errorOccurred: 'Une erreur est survenue',
+  errorBulkUpdateFieldName:
+    "Impossible de valider les modifications car le nombre d'éléments a changé.",
+  commitBulkUpdateFieldName: 'Valider les modifications',
+  bulkUpdateFieldName: 'Mise à jour en masse des noms de champs',
+  bgColor: 'Couleur de fond',
+  textColor: 'Couleur du texte',
+  barColor: 'Couleur de la barre',
+};
+
+const addOptionsToText = (text: string, options?: any) => {
+  const keys = options ? Object.keys(options) : [];
+  keys.forEach((k) => {
+    text = text.replace(`{{${k}}}`, options[k]);
+  });
+  return text;
+};
 const i18n = (lang: Lang, key: keyof DictEn) => {
   switch (lang) {
     case 'pl':
@@ -163,10 +212,13 @@ const i18n = (lang: Lang, key: keyof DictEn) => {
 
     case 'it':
       return dictIt[key];
+    case 'fr':
+      return dictFr[key];
 
     default:
-      return dictEn[key];
+      return dictFr[key];
   }
 };
 
-export const curriedI18n = (lang: Lang) => (key: keyof DictEn) => i18n(lang, key);
+export const curriedI18n = (lang: Lang) => (key: keyof DictEn, options?: any) =>
+  addOptionsToText(i18n(lang, key), options);

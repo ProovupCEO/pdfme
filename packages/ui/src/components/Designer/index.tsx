@@ -1,5 +1,14 @@
 import React, { useRef, useState, useEffect, useContext, useCallback } from 'react';
-import { ZOOM, Template, Schema, SchemaForUI, ChangeSchemas, DesignerProps, Size, Plugin } from '@pdfme/common';
+import {
+  ZOOM,
+  Template,
+  Schema,
+  SchemaForUI,
+  ChangeSchemas,
+  DesignerProps,
+  Size,
+  Plugin,
+} from '@pdfme/common';
 import Sidebar from './Sidebar/index';
 import Canvas from './Canvas/index';
 import { RULER_HEIGHT, SIDEBAR_WIDTH } from '../../constants';
@@ -26,9 +35,11 @@ const TemplateEditor = ({
   size,
   onSaveTemplate,
   onChangeTemplate,
+  options,
 }: Omit<DesignerProps, 'domContainer'> & {
   onSaveTemplate: (t: Template) => void;
   size: Size;
+  options?: any;
 } & { onChangeTemplate: (t: Template) => void }) => {
   const copiedSchemas = useRef<SchemaForUI[] | null>(null);
   const past = useRef<SchemaForUI[][]>([]);
@@ -284,6 +295,7 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
         deselectSchema={onEditEnd}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        optionsInput={options}
       />
       <Canvas
         ref={mainRef}

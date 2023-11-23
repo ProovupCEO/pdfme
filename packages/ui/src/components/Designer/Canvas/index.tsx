@@ -15,7 +15,7 @@ import { PluginsRegistry } from '../../../contexts';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { RULER_HEIGHT, SIDEBAR_WIDTH } from '../../../constants';
 import { usePrevious } from '../../../hooks';
-import { uuid, round, flatten } from '../../../helper';
+import { uuid, round, flatten, stringToColor } from '../../../helper';
 import Paper from '../../Paper';
 import Renderer from '../../Renderer';
 import Selecto from './Selecto';
@@ -258,10 +258,12 @@ const Canvas = (props: Props, ref: Ref<HTMLDivElement>) => {
     );
     const schemaTypes = selectedSchemas.map((s) => s.type);
     const uniqueSchemaTypes = [...new Set(schemaTypes)];
-    const defaultSchemas = Object.values(pluginsRegistry).map(plugin => plugin?.propPanel.defaultSchema)
+    const defaultSchemas = Object.values(pluginsRegistry).map(
+      (plugin) => plugin?.propPanel.defaultSchema
+    );
 
     return uniqueSchemaTypes.every(
-      (type) => defaultSchemas.find(ds => ds.type === type)?.rotate !== undefined
+      (type) => defaultSchemas.find((ds) => ds.type === type)?.rotate !== undefined
     );
   }, [activeElements, pageCursor, schemasList, pluginsRegistry]);
 
@@ -378,7 +380,11 @@ const Canvas = (props: Props, ref: Ref<HTMLDivElement>) => {
               changeSchemas([{ key: 'data', value, schemaId: schema.id }]);
             }}
             stopEditing={() => setEditing(false)}
-            outline={hoveringSchemaId === schema.id ? '1px solid #18a0fb' : '1px dashed #4af'}
+            outline={
+              hoveringSchemaId === schema.id
+                ? `1px solid ${stringToColor(schema.roleId ?? '')}`
+                : `1px dashed ${stringToColor(schema.roleId ?? '')}`
+            }
             scale={scale}
           />
         )}

@@ -5,12 +5,7 @@ import { Template, DesignerProps, checkDesignerProps, checkTemplate, Plugins } f
 import { builtInPlugins } from '@pdfme/schemas';
 import { BaseUIClass } from './class';
 import { DESTROYED_ERR_MSG } from './constants';
-import {
-  I18nContext,
-  FontContext,
-  PluginsRegistry,
-  OptionsContext,
-} from './contexts';
+import { I18nContext, FontContext, PluginsRegistry, OptionsContext } from './contexts';
 import DesignerComponent from './components/Designer/index';
 import { cloneDeep } from './helper';
 
@@ -32,7 +27,7 @@ const theme: ThemeConfig = {
 class Designer extends BaseUIClass {
   private onSaveTemplateCallback?: (template: Template) => void;
   private onChangeTemplateCallback?: (template: Template) => void;
-
+  private customOptions?: any;
 
   constructor(props: DesignerProps) {
     super(props);
@@ -56,6 +51,14 @@ class Designer extends BaseUIClass {
       this.onChangeTemplateCallback(template);
     }
     this.render();
+  }
+
+  public setOptions(options: any) {
+    if (!this.customOptions) {
+      this.customOptions = options;
+    } else {
+      this.customOptions.contractRoles = options.contractRoles;
+    }
   }
 
   public onSaveTemplate(cb: (template: Template) => void) {
@@ -88,6 +91,7 @@ class Designer extends BaseUIClass {
                       this.onChangeTemplateCallback(template);
                     }
                   }}
+                  options={this.customOptions}
                   size={this.size}
                 />
               </OptionsContext.Provider>

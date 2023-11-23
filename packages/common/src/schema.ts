@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const langs = ['en', 'ja', 'ar', 'th', 'pl', 'it'] as const;
+const langs = ['en', 'ja', 'ar', 'th', 'pl', 'it', 'fr'] as const;
 
 export const Lang = z.enum(langs);
 
@@ -9,6 +9,8 @@ export const Size = z.object({ height: z.number(), width: z.number() });
 export const Schema = z
   .object({
     type: z.string(),
+    roleId: z.string().optional(),
+    label: z.string().optional(),
     position: z.object({ x: z.number(), y: z.number() }),
     width: z.number(),
     height: z.number(),
@@ -73,6 +75,9 @@ export const UIProps = CommonProps.extend({
   options: UIOptions.optional(),
 });
 
-export const PreviewProps = UIProps.extend({ inputs: Inputs }).strict();
+export const PreviewProps = UIProps.extend({
+  inputs: Inputs,
+  currentRole: z.string().optional(),
+}).strict();
 
 export const DesignerProps = UIProps.extend({}).strict();

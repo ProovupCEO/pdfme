@@ -14,9 +14,11 @@ const Preview = ({
   inputs,
   size,
   onChangeInput,
+  currentRole,
 }: Omit<PreviewProps, 'domContainer'> & {
   onChangeInput?: (args: { index: number; value: string; key: string }) => void;
   size: Size;
+  currentRole?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const paperRefs = useRef<HTMLDivElement[]>([]);
@@ -97,11 +99,15 @@ const Preview = ({
               <Renderer
                 key={schema.id}
                 schema={Object.assign(schema, { data })}
-                mode={isForm ? 'form' : 'viewer'}
+                mode={isForm && (!currentRole || schema.roleId === currentRole) ? 'form' : 'viewer'}
                 placeholder={template.sampledata?.[0]?.[key] ?? ''}
                 tabIndex={index + 100}
                 onChange={(value) => handleChangeInput({ key, value })}
-                outline={isForm ? '1px dashed #4af' : 'transparent'}
+                outline={
+                  isForm && (!currentRole || schema.roleId === currentRole)
+                    ? '1px dashed #4af'
+                    : 'transparent'
+                }
                 scale={scale}
               />
             );

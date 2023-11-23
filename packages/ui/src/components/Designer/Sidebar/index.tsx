@@ -71,37 +71,34 @@ const Sidebar = (props: SidebarProps) => {
             boxSizing: 'border-box',
           }}
         >
-          {getActiveSchemas().length === 0 ? (
-            <ListView {...props} />
-          ) : (
-            <DetailView {...props} activeSchema={getLastActiveSchema()} />
-          )}
           <div
             style={{
-              position: 'absolute',
+              display: 'flex',
+              justifyContent: 'space-around',
               width: '100%',
               left: 0,
               bottom: '1rem',
-              paddingTop: '1rem',
+              paddingBottom: '1rem',
             }}
           >
-            <div style={{ marginBottom: '1rem', borderBottom: '1px solid #e5e5e5' }} />
             <button
-              type="button"
               style={{
                 padding: '0.5rem',
                 background: '#18a0fb',
                 border: 'none',
                 borderRadius: 2,
                 cursor: 'pointer',
-                margin: '0 auto',
-                display: 'block',
               }}
               onClick={addSchema}
             >
               <strong style={{ color: '#fff' }}>{i18n('addNewField')}</strong>
             </button>
           </div>
+          {getActiveSchemas().length === 0 ? (
+            <ListView {...props} />
+          ) : (
+            <DetailView {...props} activeSchema={getLastActiveSchema()} />
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,24 @@ import { builtInPlugins } from '@pdfme/schemas';
 import { drawEmbeddedPage, getEmbeddedPagesAndEmbedPdfBoxes } from './pdfUtils';
 import { TOOL_NAME } from './constants';
 
+const addHeaderLineToAllPages = (pdfDoc: pdfLib.PDFDocument, lineText: string) => {
+  const fontSize = 8; // Taille de police petite
+  const margin = 5; // Marge supérieure
+
+  const pages = pdfDoc.getPages();
+  pages.forEach((page) => {
+    const { width, height } = page.getSize();
+    const textX = margin; // Positionner le texte avec une marge depuis le bord gauche
+    const textY = height - margin - fontSize; // Position en haut de la page
+
+    page.drawText(lineText, {
+      x: textX,
+      y: textY,
+      size: fontSize,
+    });
+  });
+};
+
 const preprocessing = async ({ template }: { template: Template }) => {
   const { basePdf } = template;
 
@@ -24,7 +42,7 @@ const postProcessing = ({ pdfDoc }: { pdfDoc: pdfLib.PDFDocument }) => {
   pdfDoc.setCreator(TOOL_NAME);
 };
 
-const generate = async (props: GenerateProps) => {
+const generate = async (props: GenerateProps, lignInfo?: string) => {
   checkGenerateProps(props);
   const { inputs, template, options = {}, plugins: userPlugins = {} } = props;
 
@@ -66,10 +84,13 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
       }
     }
   }
+  if (lignInfo) {
+    addHeaderLineToAllPages(pdfDoc, lignInfo);
+  }
 
   postProcessing({ pdfDoc });
 
-  return pdfDoc.save();
+  return pdfDoc.save({ useObjectStreams: false });
 };
 
 export default generate;

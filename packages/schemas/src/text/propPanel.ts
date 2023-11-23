@@ -122,8 +122,6 @@ export const propPanel: PropPanel<TextSchema> = {
           },
         },
       },
-      fontColor: { title: 'Font Color', type: 'string', widget: 'color' },
-      backgroundColor: { title: 'Background', type: 'string', widget: 'color' },
     };
 
     return textSchema;

@@ -18,6 +18,16 @@ class Form extends PreviewUI {
     this.onChangeInputCallback = cb;
   }
 
+  public changeInput(arg: { index: number; value: string; key: string }) {
+    if (!this.domContainer) throw Error(DESTROYED_ERR_MSG);
+    const { index, value, key } = arg;
+    if (this.onChangeInputCallback) {
+      this.onChangeInputCallback({ index, value, key });
+    }
+    this.inputs[index][key] = value;
+    this.render();
+  }
+
   protected render() {
     if (!this.domContainer) throw Error(DESTROYED_ERR_MSG);
     ReactDOM.render(
@@ -37,6 +47,7 @@ class Form extends PreviewUI {
                   this.inputs[index][key] = value;
                   this.render();
                 }}
+                currentRole={this.currentRole}
               />
             </OptionsContext.Provider>
           </PluginsRegistry.Provider>

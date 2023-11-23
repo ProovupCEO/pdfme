@@ -39,6 +39,24 @@ export const set = <T extends object>(obj: T, path: string | string[], value: an
   });
 };
 
+export const stringToColor = (str: string) => {
+  // Convertit une chaîne en un hachage (un nombre)
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Convertit le hachage en une couleur rgba
+  const r = (hash & 0xff0000) >> 16;
+  const g = (hash & 0x00ff00) >> 8;
+  const b = hash & 0x0000ff;
+
+  return `rgba(${r}, ${g}, ${b}, 0.3)`; // 0.3 pour la transparence
+};
+
+export const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 export const debounce = <T extends Function>(cb: T, wait = 20) => {
   let h: null | ReturnType<typeof setTimeout> = null;
   const callable = (...args: any) => {
