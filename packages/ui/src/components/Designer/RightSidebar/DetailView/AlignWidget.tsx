@@ -10,7 +10,7 @@ import {
   AlignEndHorizontal,
   AlignVerticalSpaceAround,
   AlignHorizontalSpaceAround,
-} from 'lucide-react'
+} from 'lucide-react';
 import { round } from '../../../../helper';
 
 const AlignWidget = (props: PropPanelWidgetProps) => {
@@ -80,47 +80,47 @@ const AlignWidget = (props: PropPanelWidgetProps) => {
     icon: React.JSX.Element;
     onClick: () => void;
   }[] = [
-      {
-        id: 'left',
-        icon: <AlignStartVertical size={15} />,
-        onClick: () => align('left')
-      },
-      {
-        id: 'center',
-        icon: <AlignCenterVertical size={15} />,
-        onClick: () => align('center')
-      },
-      {
-        id: 'right',
-        icon: <AlignEndVertical size={15} />,
-        onClick: () => align('right')
-      },
-      {
-        id: 'top',
-        icon: <AlignStartHorizontal size={15} />,
-        onClick: () => align('top')
-      },
-      {
-        id: 'middle',
-        icon: <AlignCenterHorizontal size={15} />,
-        onClick: () => align('middle')
-      },
-      {
-        id: 'bottom',
-        icon: <AlignEndHorizontal size={15} />,
-        onClick: () => align('bottom')
-      },
-      {
-        id: 'vertical',
-        icon: <AlignVerticalSpaceAround size={15} />,
-        onClick: () => distribute('vertical')
-      },
-      {
-        id: 'horizontal',
-        icon: <AlignHorizontalSpaceAround size={15} />,
-        onClick: () => distribute('horizontal')
-      },
-    ];
+    {
+      id: 'left',
+      icon: <AlignStartVertical size={15} />,
+      onClick: () => align('left'),
+    },
+    {
+      id: 'center',
+      icon: <AlignCenterVertical size={15} />,
+      onClick: () => align('center'),
+    },
+    {
+      id: 'right',
+      icon: <AlignEndVertical size={15} />,
+      onClick: () => align('right'),
+    },
+    {
+      id: 'top',
+      icon: <AlignStartHorizontal size={15} />,
+      onClick: () => align('top'),
+    },
+    {
+      id: 'middle',
+      icon: <AlignCenterHorizontal size={15} />,
+      onClick: () => align('middle'),
+    },
+    {
+      id: 'bottom',
+      icon: <AlignEndHorizontal size={15} />,
+      onClick: () => align('bottom'),
+    },
+    {
+      id: 'vertical',
+      icon: <AlignVerticalSpaceAround size={15} />,
+      onClick: () => distribute('vertical'),
+    },
+    {
+      id: 'horizontal',
+      icon: <AlignHorizontalSpaceAround size={15} />,
+      onClick: () => distribute('horizontal'),
+    },
+  ];
 
   return (
     <Form.Item label={schema.title}>

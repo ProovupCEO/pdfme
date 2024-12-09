@@ -5,7 +5,7 @@ import { PluginsRegistry, I18nContext } from '../../../../contexts';
 import Item from './Item';
 import { useMountStatus } from '../../../../hooks';
 import { theme } from 'antd';
-import PluginIcon from "../../PluginIcon";
+import PluginIcon from '../../PluginIcon';
 
 interface Props {
   isSelected: boolean;
@@ -45,7 +45,6 @@ const SelectableSortableItem = ({
   const [pluginLabel, thisPlugin] = Object.entries(pluginsRegistry).find(
     ([label, plugin]) => plugin?.propPanel.defaultSchema.type === schema.type
   )!;
-
 
   let status: undefined | 'is-warning' | 'is-danger';
   if (!schema.name) {

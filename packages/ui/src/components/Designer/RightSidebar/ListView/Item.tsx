@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { DraggableSyntheticListeners } from '@dnd-kit/core';
 import { I18nContext } from '../../../../contexts';
-import { GripVertical, CircleAlert, Lock } from 'lucide-react'
+import { GripVertical, CircleAlert, Lock } from 'lucide-react';
 import { Button, Typography } from 'antd';
 
 const { Text } = Typography;

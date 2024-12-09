@@ -176,4 +176,3 @@ export const createBarCode = async (arg: {
 
   return res;
 };
-

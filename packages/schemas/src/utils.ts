@@ -219,9 +219,7 @@ export const createSvgStr = (icon: IconNode, attrs?: Record<string, string>): st
       .map(([key, value]) => `${key}="${value}"`)
       .join(' ');
 
-    const childrenString = children
-      .map((child) => createElementString(child))
-      .join('');
+    const childrenString = children.map((child) => createElementString(child)).join('');
 
     return `<${tag} ${attrString}>${childrenString}</${tag}>`;
   };
