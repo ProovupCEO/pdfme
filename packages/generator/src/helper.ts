@@ -73,7 +73,7 @@ export const validateRequiredFields = (template: Template, inputs: Record<string
 export const preprocessing = async (arg: { template: Template; userPlugins: Plugins }) => {
   const { template, userPlugins } = arg;
   const { schemas, basePdf } = template;
-  const staticSchema: Schema[] = isBlankPdf(basePdf) ? (basePdf.staticSchema ?? []) : [];
+  const staticSchema: Schema[] = isBlankPdf(basePdf) ? basePdf.staticSchema ?? [] : [];
 
   const pdfDoc = await PDFDocument.create();
   // @ts-ignore
