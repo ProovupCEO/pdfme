@@ -20,9 +20,11 @@ const Preview = ({
   inputs,
   size,
   onChangeInput,
+  currentRole,
 }: Omit<PreviewProps, 'domContainer'> & {
   onChangeInput?: (args: { index: number; value: string; name: string }) => void;
   size: Size;
+  currentRole?: string;
 }) => {
   const { token } = theme.useToken();
 
@@ -164,7 +166,9 @@ const Preview = ({
                   handleOnChangeRenderer(args, schema);
                 }}
                 outline={
-                  isForm && !schema.readOnly ? `1px dashed ${token.colorPrimary}` : 'transparent'
+                  isForm && (!currentRole || schema.roleId === currentRole)
+                    ? '1px dashed #4af'
+                    : 'transparent'
                 }
                 scale={scale}
               />

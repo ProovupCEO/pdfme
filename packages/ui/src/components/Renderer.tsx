@@ -4,6 +4,7 @@ import { theme as antdTheme } from 'antd';
 import { SELECTABLE_CLASSNAME } from '../constants';
 import { PluginsRegistry, OptionsContext, I18nContext } from '../contexts';
 import * as pdfJs from 'pdfjs-dist';
+import { capitalize } from '../helper';
 
 type RendererProps = Omit<
   UIRenderProps<Schema>,
@@ -74,6 +75,24 @@ const Wrapper = ({
         fontWeight: 700,
       }}>*</span>
     }
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        color: 'black',
+        padding: '2px',
+        fontSize: '10px',
+        maxWidth: '50px', // Largeur maximale
+        overflow: 'hidden', // Masque le texte qui déborde
+        whiteSpace: 'nowrap', // Empêche les retours à la ligne
+        textOverflow: 'ellipsis', // Ajoute des points de suspension à la fin du texte tronqué
+        zIndex: 1,
+      }}
+    >
+      {schema.key ? capitalize(schema.key) : ''}
+    </div>
     {children}
   </div>
 );

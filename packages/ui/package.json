@@ -1,6 +1,6 @@
 {
-  "name": "@pdfme/ui",
-  "version": "0.0.0",
+  "name": "@proovup/pdfme-ui",
+  "version": "3.0.3",
   "sideEffects": false,
   "author": "hand-dot",
   "license": "MIT",
@@ -16,7 +16,7 @@
   "homepage": "https://pdfme.com",
   "repository": {
     "type": "git",
-    "url": "git@github.com:pdfme/pdfme.git"
+    "url": "git+ssh://git@github.com/ProovupCEO/pdfme.git"
   },
   "bugs": {
     "url": "https://github.com/pdfme/pdfme/issues"

@@ -16,7 +16,7 @@ import { PluginsRegistry } from '../../../contexts';
 import { X } from 'lucide-react';
 import { RULER_HEIGHT, RIGHT_SIDEBAR_WIDTH } from '../../../constants';
 import { usePrevious } from '../../../hooks';
-import { uuid, round, flatten } from '../../../helper';
+import { uuid, round, flatten, stringToColor } from '../../../helper';
 import Paper from '../../Paper';
 import Renderer from '../../Renderer';
 import Selecto from './Selecto';

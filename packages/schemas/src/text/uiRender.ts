@@ -18,6 +18,7 @@ import {
   calculateDynamicFontSize,
   getFontKitFont,
   getBrowserVerticalFontAdjustments,
+  stringToColor,
   isFirefox,
 } from './helper.js';
 import { isEditable } from '../utils.js';

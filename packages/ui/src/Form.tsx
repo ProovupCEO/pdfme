@@ -73,6 +73,7 @@ class Form extends PreviewUI {
               }
             }
           }}
+                currentRole={this.currentRole}
         />
       </AppContextProvider>,
       this.domContainer

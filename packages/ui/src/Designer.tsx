@@ -16,6 +16,7 @@ import AppContextProvider from './components/AppContextProvider';
 class Designer extends BaseUIClass {
   private onSaveTemplateCallback?: (template: Template) => void;
   private onChangeTemplateCallback?: (template: Template) => void;
+  private customOptions?: any;
   private pageCursor: number = 0;
 
   constructor(props: DesignerProps) {
@@ -38,6 +39,14 @@ class Designer extends BaseUIClass {
       this.onChangeTemplateCallback(template);
     }
     this.render();
+  }
+
+  public setOptions(options: any) {
+    if (!this.customOptions) {
+      this.customOptions = options;
+    } else {
+      this.customOptions.contractRoles = options.contractRoles;
+    }
   }
 
   public onSaveTemplate(cb: (template: Template) => void) {
