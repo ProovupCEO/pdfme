@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { SchemaForUI } from '@pdfme/common';
 import { I18nContext } from '../../../../contexts';
 
@@ -58,9 +58,8 @@ const AutoCompleteInput = ({
   };
 
   const handleAddNewRole = () => {
-    console.log(optionsInput);
     const currentRoles = optionsInput.contractRoles;
-    optionsInput.setContractRoles([...currentRoles, inputValue]);
+    optionsInput.setContractRoles([...currentRoles, inputValue.toLowerCase()]);
     changeSchemas([{ key: 'roleId', value: inputValue.toLowerCase(), schemaId: activeSchema.id }]);
     const newRoles = optionsInput.contractRoles;
     const filteredSuggestions = newRoles.filter(

@@ -2,11 +2,12 @@ To develop pdfme locally you need to install it, then embed it within a React ap
 You can either use your own, or use the [pdfme-playground](https://github.com/pdfme/pdfme-playground).
 
 ## Installing and linking pdfme
-
-* Clone the repository
+fdffqsfd
+* Clone the repositoryfdsqf dfqfddsf
 * install dependency with `npm install`
 * Use `npm link` in `packages/generator` and `packages/ui`:
-
+fdqdffd 
+New change
 ```cmd
 [in pdfme dir] $ npm install
 [in pdfme dir] $ npm run build
