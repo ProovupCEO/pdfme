@@ -322,7 +322,7 @@ const evaluatePlaceholders = (arg: {
 
     if (braceCount === 0) {
       const code = content.slice(startIndex + 1, endIndex - 1).trim();
-      
+
       if (expressionCache.has(code)) {
         const evalFunc = expressionCache.get(code)!;
         try {
@@ -352,7 +352,6 @@ const evaluatePlaceholders = (arg: {
 
   return resultContent;
 };
-
 
 export const replacePlaceholders = (arg: {
   content: string;
