@@ -46,7 +46,15 @@ class Form extends PreviewUI {
     });
   }
 
-
+  public changeInput(arg: { index: number; value: string; name: string }) {
+    if (!this.domContainer) throw Error(DESTROYED_ERR_MSG);
+    const { index, value, name } = arg;
+    if (this.onChangeInputCallback) {
+      this.onChangeInputCallback({ index, value, name });
+    }
+    this.inputs[index][name] = value;
+    this.render();
+  }
 
   protected render() {
     if (!this.domContainer) throw Error(DESTROYED_ERR_MSG);
@@ -73,7 +81,7 @@ class Form extends PreviewUI {
               }
             }
           }}
-                currentRole={this.currentRole}
+          currentRole={this.currentRole}
         />
       </AppContextProvider>,
       this.domContainer

@@ -1,5 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { Template, SchemaForUI, PreviewProps, Size, getDynamicTemplate, replacePlaceholders } from '@pdfme/common';
+import {
+  Template,
+  SchemaForUI,
+  PreviewProps,
+  Size,
+  getDynamicTemplate,
+  replacePlaceholders,
+} from '@pdfme/common';
 import { getDynamicHeightsForTable } from '@pdfme/schemas/utils';
 import UnitPager from './UnitPager';
 import Root from './Root';
@@ -38,8 +45,11 @@ const Preview = ({
   const [zoomLevel, setZoomLevel] = useState(1);
   const [schemasList, setSchemasList] = useState<SchemaForUI[][]>([[]] as SchemaForUI[][]);
 
-  const { backgrounds, pageSizes, scale, error, refresh } =
-    useUIPreProcessor({ template, size, zoomLevel });
+  const { backgrounds, pageSizes, scale, error, refresh } = useUIPreProcessor({
+    template,
+    size,
+    zoomLevel,
+  });
 
   const isForm = Boolean(onChangeInput);
 
@@ -88,7 +98,7 @@ const Preview = ({
   const handleChangeInput = ({ name, value }: { name: string; value: string }) =>
     onChangeInput && onChangeInput({ index: unitCursor, name, value });
 
-  const handleOnChangeRenderer = (args: { key: string; value: any; }[], schema: SchemaForUI) => {
+  const handleOnChangeRenderer = (args: { key: string; value: any }[], schema: SchemaForUI) => {
     let isNeedInit = false;
     args.forEach(({ key: _key, value }) => {
       if (_key === 'content') {
@@ -99,9 +109,7 @@ const Preview = ({
         // TODO Improve this to allow schema types to determine whether the execution of getDynamicTemplate is required.
         if (schema.type === 'table') isNeedInit = true;
       } else {
-        const targetSchema = schemasList[pageCursor].find(
-          (s) => s.id === schema.id
-        ) as SchemaForUI;
+        const targetSchema = schemasList[pageCursor].find((s) => s.id === schema.id) as SchemaForUI;
         if (!targetSchema) return;
 
         // @ts-ignore
@@ -111,8 +119,8 @@ const Preview = ({
     if (isNeedInit) {
       init(template);
     }
-    setSchemasList([...schemasList])
-  }
+    setSchemasList([...schemasList]);
+  };
 
   if (error) {
     return <ErrorScreen size={size} error={error} />;
@@ -147,18 +155,20 @@ const Preview = ({
           pageSizes={pageSizes}
           backgrounds={backgrounds}
           renderSchema={({ schema, index }) => {
-            const value = schema.readOnly ? replacePlaceholders({
-              content: schema.content || '',
-              variables: { ...input, totalPages: schemasList.length, currentPage: index + 1, },
-              schemas: schemasList
-            }) : String(input && input[schema.name] || '');
+            const value = schema.readOnly
+              ? replacePlaceholders({
+                  content: schema.content || '',
+                  variables: { ...input, totalPages: schemasList.length, currentPage: index + 1 },
+                  schemas: schemasList,
+                })
+              : String((input && input[schema.name]) || '');
             return (
               <Renderer
                 key={schema.id}
                 schema={schema}
                 basePdf={template.basePdf}
                 value={value}
-                mode={isForm ? 'form' : 'viewer'}
+                mode={isForm && (!currentRole || schema.roleId === currentRole) ? 'form' : 'viewer'}
                 placeholder={schema.content}
                 tabIndex={index + 100}
                 onChange={(arg) => {

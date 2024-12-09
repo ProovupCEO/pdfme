@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SchemaForUI } from '@pdfme/common';
 import { I18nContext } from '../../../../contexts';
 
@@ -58,8 +58,9 @@ const AutoCompleteInput = ({
   };
 
   const handleAddNewRole = () => {
+    console.log(optionsInput);
     const currentRoles = optionsInput.contractRoles;
-    optionsInput.setContractRoles([...currentRoles, inputValue.toLowerCase()]);
+    optionsInput.setContractRoles([...currentRoles, inputValue]);
     changeSchemas([{ key: 'roleId', value: inputValue.toLowerCase(), schemaId: activeSchema.id }]);
     const newRoles = optionsInput.contractRoles;
     const filteredSuggestions = newRoles.filter(
@@ -76,9 +77,9 @@ const AutoCompleteInput = ({
     <>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
         <label style={{ marginBottom: 5 }}>
-          {i18n('roleLabel')}
+          Role
           <u style={{ fontSize: '0.7rem', marginLeft: 2 }}>
-            (<ErrorLabel msg={i18n('require')} isError={blankKey} />)
+            (<ErrorLabel msg={i18n('required')} isError={blankKey} />)
           </u>
         </label>
         <input
@@ -130,7 +131,7 @@ const AutoCompleteInput = ({
                   fontWeight: 'bold',
                 }}
               >
-                {i18n('rolePlaceholder', { role: inputValue })}
+                Add new role: {inputValue}
               </li>
             )}
           </ul>

@@ -19,9 +19,6 @@ const dictEn: { [key in keyof Dict]: string } = {
   notUniq: '(Not unique name)',
   noKeyName: 'No name',
   fieldsList: 'Field List',
-  roleLabel: 'Role',
-  rolePlaceholder: 'Add "{{role}}" as new role',
-  addNewField: 'Add new field',
   editField: 'Edit Field',
   type: 'Type',
   errorOccurred: 'An error occurred',
@@ -169,8 +166,6 @@ const dictJa: { [key in keyof Dict]: string } = {
   noKeyName: '項目名なし',
   fieldsList: '入力項目一覧',
   editField: '入力項目を編集',
-  roleLabel: 'ロール',
-  rolePlaceholder: '"{{role}}"を新しいロールとして追加',
   type: 'タイプ',
   errorOccurred: 'エラーが発生しました',
   errorBulkUpdateFieldName: '項目数が変更されているため変更をコミットできません。',
@@ -316,8 +311,6 @@ const dictAr: { [key in keyof Dict]: string } = {
   fieldsList: 'قائمة الحقول',
   editField: 'تعديل الحقل',
   type: 'النوع',
-  roleLabel: 'الدور',
-  rolePlaceholder: 'إضافة "{{role}}" كدور جديد',
   errorOccurred: 'حدث خطأ',
   errorBulkUpdateFieldName: 'لا يمكن تنفيذ التغيير لأنه تم تغيير عدد العناصر.',
   commitBulkUpdateFieldName: 'تنفيذ التغييرات',
@@ -384,8 +377,6 @@ const dictTh: { [key in keyof Dict]: string } = {
   required: 'ที่จำเป็น',
   editable: 'แก้ไขได้',
   edit: 'แก้ไข',
-  roleLabel: 'บทบาท',
-  rolePlaceholder: 'เพิ่ม "{{role}}" เป็นบทบาทใหม่',
   plsInputName: 'กรุณาใส่ชื่อ',
   fieldMustUniq: 'ชื่อฟิลด์ต้องไม่ซ้ำกัน',
   notUniq: '(ชื่อฟิลด์ซ้ำกัน)',
@@ -458,8 +449,6 @@ const dictIt: { [key in keyof Dict]: string } = {
   required: 'Necessaria',
   editable: 'Modificabile',
   edit: 'Modifica',
-  roleLabel: 'Ruolo',
-  rolePlaceholder: 'Aggiungi "{{role}}" come nuovo ruolo',
   plsInputName: 'Inserisci il nome per favore',
   fieldMustUniq: 'Il nome del campo non è univoco',
   notUniq: '(Nome non univoco)',
@@ -535,8 +524,6 @@ const dictPl: { [key in keyof Dict]: string } = {
   required: 'Wymagany',
   editable: 'Edytowalny',
   edit: 'Edytuj',
-  roleLabel: 'Rola',
-  rolePlaceholder: 'Dodaj "{{role}}" jako nową rolę',
   plsInputName: 'Wymagane wprowadzenie klucza pola',
   fieldMustUniq: 'Klucz pola nie jest unikalny',
   notUniq: '(Klucz pola nie jest unikalny)',
@@ -669,14 +656,6 @@ const dictDe: { [key in keyof Dict]: string } = {
   'schemas.select.options': 'Optionen',
   'schemas.select.optionPlaceholder': 'Geben Sie eine Option ein',
   'schemas.radioGroup.groupName': 'Gruppenname',
-};
-
-const addOptionsToText = (text: string, options?: any) => {
-  const keys = options ? Object.keys(options) : [];
-  keys.forEach((k) => {
-    text = text.replace(`{{${k}}}`, options[k]);
-  });
-  return text;
 };
 
 const dictEs: { [key in keyof Dict]: string } = {
@@ -843,4 +822,5 @@ const dictionaries: { [key in Lang]: Dict } = {
 };
 
 export const getDict = (lang: Lang): Dict => dictionaries[lang] || dictionaries[DEFAULT_LANG];
+
 export const i18n = (key: keyof Dict, dict?: Dict) => (dict || getDict(DEFAULT_LANG))[key];

@@ -110,7 +110,7 @@ export const getPlugin = ({
         fontSize: `${schema.fontSize ?? DEFAULT_FONT_SIZE}pt`,
         letterSpacing: `${schema.characterSpacing ?? DEFAULT_CHARACTER_SPACING}pt`,
         textAlign: schema.alignment ?? DEFAULT_ALIGNMENT,
-        backgroundColor: getBackgroundColor(value, schema),
+        backgroundColor: getBackgroundColor(mode, value, schema),
 
         margin: '0',
         padding: '0',

@@ -22,6 +22,7 @@ import {
   isFirefox,
 } from './helper.js';
 import { isEditable } from '../utils.js';
+import { Schema } from '@proovup/pdfme-common';
 
 const replaceUnsupportedChars = (text: string, fontKitFont: FontKitFont): string => {
   const charSupportCache: { [char: string]: boolean } = {};
@@ -57,6 +58,19 @@ const replaceUnsupportedChars = (text: string, fontKitFont: FontKitFont): string
     .join('');
 };
 
+export const getBackgroundColor = (
+  mode: 'form' | 'viewer' | 'designer',
+  value: string,
+  schema: Schema
+) => {
+  if ((mode === 'form' || mode === 'designer') && value && schema.backgroundColor) {
+    return stringToColor(schema.roleId ?? '');
+  } else if (mode === 'viewer') {
+    return stringToColor(schema.roleId ?? '') ?? 'transparent';
+  } else {
+    return stringToColor(schema.roleId ?? '');
+  }
+};
 export const uiRender = async (arg: UIRenderProps<TextSchema>) => {
   const { value, schema, mode, onChange, stopEditing, tabIndex, placeholder, options, _cache } =
     arg;
@@ -190,7 +204,7 @@ export const buildStyledTextContainer = async (arg: UIRenderProps<TextSchema>, v
   const containerStyle: CSS.Properties = {
     padding: 0,
     resize: 'none',
-    backgroundColor: getBackgroundColor(value, schema),
+    backgroundColor: getBackgroundColor(mode, value, schema),
     border: 'none',
     display: 'flex',
     flexDirection: 'column',
@@ -276,9 +290,4 @@ export const mapVerticalAlignToFlex = (verticalAlignmentValue: string | undefine
       return 'flex-end';
   }
   return 'flex-start';
-};
-
-export const getBackgroundColor = (value: string, schema: { backgroundColor?: string }) => {
-  if (!value || !schema.backgroundColor) return 'transparent';
-  return schema.backgroundColor;
 };

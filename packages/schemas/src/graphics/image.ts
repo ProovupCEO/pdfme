@@ -15,6 +15,7 @@ import {
 import { DEFAULT_OPACITY } from '../constants.js';
 import { getImageDimension } from './imagehelper.js';
 import { isPdf, pdfToImage } from './pdfHelper.js';
+import { stringToColor } from '../text/helper';
 
 const getCacheKey = (schema: Schema, input: string) => `${schema.type}${input}`;
 const fullSize = { width: '100%', height: '100%' };
@@ -86,13 +87,14 @@ const imageSchema: Plugin<ImageSchema> = {
       schema,
     } = arg;
     const editable = isEditable(mode, schema);
+    const hasData = Boolean(schema.data);
     const isDefault = value === defaultValue;
 
     const container = document.createElement('div');
-    const backgroundStyle = placeholder ? `url(${placeholder})` : 'none';
     const containerStyle: CSS.Properties = {
       ...fullSize,
-      backgroundImage: value ? 'none' : backgroundStyle,
+      backgroundColor: hasData ? undefined : stringToColor(schema.roleId || ''),
+      backgroundImage: undefined,
       backgroundSize: `contain`,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
@@ -100,6 +102,9 @@ const imageSchema: Plugin<ImageSchema> = {
     Object.assign(container.style, containerStyle);
     container.addEventListener('click', (e) => {
       if (editable) {
+        if (schema.roleId && onChange) {
+          onChange(hasData ? { key: 'content', value: value } : { key: 'content', value: '' });
+        }
         e.stopPropagation();
       }
     });
@@ -107,7 +112,7 @@ const imageSchema: Plugin<ImageSchema> = {
 
     // image tag
     if (value) {
-      let src = isPdf(value) ? await pdfToImage(arg) : value;
+      const src = isPdf(value) ? await pdfToImage(arg) : value;
       const img = document.createElement('img');
       const imgStyle: CSS.Properties = {
         height: '100%',
@@ -160,29 +165,29 @@ const imageSchema: Plugin<ImageSchema> = {
       };
       Object.assign(label.style, labelStyle);
       container.appendChild(label);
-      const input = document.createElement('input');
-      const inputStyle: CSS.Properties = {
-        ...fullSize,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '180px',
-        height: '30px',
-        marginLeft: '-90px',
-        marginTop: '-15px',
-      };
-      Object.assign(input.style, inputStyle);
-      input.tabIndex = tabIndex || 0;
-      input.type = 'file';
-      input.accept = 'image/jpeg, image/png, application/pdf';
-      input.addEventListener('change', (event: Event) => {
-        const changeEvent = event as unknown as ChangeEvent<HTMLInputElement>;
-        readFile(changeEvent.target.files).then(
-          (result) => onChange && onChange({ key: 'content', value: result as string })
-        );
-      });
-      input.addEventListener('blur', () => stopEditing && stopEditing());
-      label.appendChild(input);
+      // const input = document.createElement('input');
+      // const inputStyle: CSS.Properties = {
+      //   ...fullSize,
+      //   position: 'absolute',
+      //   top: '50%',
+      //   left: '50%',
+      //   width: '180px',
+      //   height: '30px',
+      //   marginLeft: '-90px',
+      //   marginTop: '-15px',
+      // };
+      // Object.assign(input.style, inputStyle);
+      // input.tabIndex = tabIndex || 0;
+      // input.type = 'file';
+      // input.accept = 'image/jpeg, image/png, application/pdf';
+      // input.addEventListener('change', (event: Event) => {
+      //   const changeEvent = event as unknown as ChangeEvent<HTMLInputElement>;
+      //   readFile(changeEvent.target.files).then(
+      //     (result) => onChange && onChange({ key: 'content', value: result as string })
+      //   );
+      // });
+      // input.addEventListener('blur', () => stopEditing && stopEditing());
+      // label.appendChild(input);
     }
   },
   propPanel: {
